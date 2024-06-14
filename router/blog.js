@@ -1,0 +1,21 @@
+const express = require("express");
+const router = express.Router();
+const createBlog = require("../controllers/blog/createBlog");
+const getAllBlogs = require("../controllers/blog/getAllBlogs");
+const getBlogById = require("../controllers/blog/getBlogById");
+const updateBlog = require("../controllers/blog/updateBlog");
+const deleteBlog = require("../controllers/blog/deleteBlog");
+const verifyToken = require("../middleware/verifyToken");
+const likeBlog = require("../controllers/blog/likeBlog");
+const dislikeBlog = require("../controllers/blog/dislikeBlog");
+const commentBlog = require("../controllers/blog/commentBlog");
+router.post("/createBlog", verifyToken, createBlog);
+router.get("/getAllBlogs", getAllBlogs);
+router.get("/getBlogById/:id", getBlogById);
+router.put("/updateBlog/:id", verifyToken, updateBlog);
+router.delete("/deleteBlog/:id", verifyToken, deleteBlog);
+router.put("/likeBlog/:id", verifyToken, likeBlog);
+router.put("/dislikeBlog/:id", verifyToken, dislikeBlog);
+router.put("/commentBlog/:id", verifyToken, commentBlog);
+
+module.exports = router;
