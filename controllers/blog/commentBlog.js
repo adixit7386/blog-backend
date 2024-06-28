@@ -1,5 +1,6 @@
 const BlogArticle = require("../../models/BlogArticle");
 const BlogComment = require("../../models/BlogComment");
+const User = require("../../models/User");
 
 const mongoose = require("mongoose");
 
@@ -7,7 +8,12 @@ const commentBlog = async (req, res) => {
   try {
     //get the details
     const blogId = req.params.id;
-    const username = req.body.username;
+    const user = await User.findById(req.user._id);
+    console.log(user);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    const username = user.username;
     const { comment } = req.body;
     //save the comment
     try {
@@ -17,12 +23,13 @@ const commentBlog = async (req, res) => {
         res.status(500).json("Blog Not Found");
       }
       const newComment = new BlogComment({
-        username: new mongoose.Types.ObjectId(username),
+        username: user._id,
         comment: comment,
       });
       const commentDocs = await newComment.save();
       //   console.log(commentDocs._id);
       blog.comments.push({ id: commentDocs._id });
+
       await blog.save();
       res.status(201).json("Data saved successfully");
     } catch (error) {
