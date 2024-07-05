@@ -3,11 +3,12 @@ const dotenv = require("dotenv");
 const dbConnect = require("./config/mongodb");
 const blogRouter = require("./router/blog");
 const authRouter = require("./router/auth");
+const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.use("/blog", blogRouter);
