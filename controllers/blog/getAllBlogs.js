@@ -2,7 +2,7 @@ const BlogArticle = require("../../models/BlogArticle");
 
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await BlogArticle.find().populate("contents.id");
+    const blogs = await BlogArticle.find().populate("contents.id writtenBy");
     res.status(200).json(blogs);
   } catch (error) {
     res.status(500).json({ message: error.message });
